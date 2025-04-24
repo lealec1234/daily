@@ -1,0 +1,25 @@
+name: Daily Commit Bot
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # every day at midnight UTC
+  workflow_dispatch:     # allows manual trigger
+
+jobs:
+  update-file:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Modify file
+      run: echo "Updated on $(date)" >> bot.txt
+
+    - name: Commit changes
+      run: |
+        git config --global user.name "GitHub Bot"
+        git config --global user.email "bot@example.com"
+        git add bot.txt
+        git commit -m "Daily update on $(date)"
+        git push
