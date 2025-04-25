@@ -1,28 +1,32 @@
-name: Daily Commit Bot
+name: Daily Contribution
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Every day at midnight UTC
-  workflow_dispatch:
-
+    - cron: "0 15 * * *"  # Every day at 3 PM UTC
 permissions:
   contents: write
-
 jobs:
-  update-file:
+  daily-commit:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Modify file
-      run: echo "Updated on $(date)" >> bot.txt
+      - name: Configure Git
+        run: |
+          git config --global user.name "lealec1234"
+          git config --global user.email "lealec1234@gmail.com"
 
-    - name: Commit changes
-      run: |
-        git config --global user.name "GitHub Bot"
-        git config --global user.email "bot@example.com"
-        git add bot.txt
-        git commit -m "Daily update on $(date)"
-        git push
+      - name: Make commit
+        run: |
+          echo "Update at $(date)" >> daily.txt
+          git add daily.txt
+          git commit -m "Daily update"
+          git push
+
+
+
+
+
+
+
