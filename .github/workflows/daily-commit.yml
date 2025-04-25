@@ -19,7 +19,7 @@ jobs:
 
       - name: Make commit
         run: |
-          echo "Update at $(date)" >> daily.txt
+          echo "Update at $(date)" >> bot.txt
           git add daily.txt
           git commit -m "Daily update"
           git push
