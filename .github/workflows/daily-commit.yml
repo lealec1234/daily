@@ -3,30 +3,28 @@ name: Daily Contribution
 on:
   schedule:
     - cron: "0 15 * * *"  # Every day at 3 PM UTC
+  workflow_dispatch:      # Also allow manual runs for testing
 permissions:
   contents: write
+
 jobs:
   daily-commit:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+          fetch-depth: 0  # Important to fetch all history for commit
 
       - name: Configure Git
         run: |
           git config --global user.name "lealec1234"
           git config --global user.email "lealec1234@gmail.com"
 
-      - name: Make commit
+      - name: Update bot.txt and commit
         run: |
           echo "Update at $(date)" >> bot.txt
           git add bot.txt
-          git commit -m "Daily update"
+          git commit -m "Daily update" || echo "No changes to commit"
           git push
-
-
-
-
-
-
-
